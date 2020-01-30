@@ -1,0 +1,58 @@
+name: Rust
+
+on: [push]
+
+jobs:
+  unix:
+    name: Ubuntu
+    runs-on: ${{ matrix.platform }}
+    strategy:
+      matrix:
+        platform: [ubuntu-16.04, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Update
+        run: rustup update
+      - name: Build
+        run: cargo build -v --release
+      - name: Run tests
+        run: cargo test -v
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: linux
+          path: target/release/[name]
+
+  macos:
+    name: macOS
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Update
+        run: rustup update
+      - name: Build
+        run: cargo build -v --release
+      - name: Run tests
+        run: cargo test -v
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: macos
+          path: target/release/[name]
+
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Update
+        run: rustup update
+      - name: Build
+        run: cargo build -v --release
+      - name: Run tests
+        run: cargo test -v
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: windows
+          path: target/release/[name].exe
